@@ -525,7 +525,7 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-logo">arokia.lijas</div>
+  <div class="topbar-logo" onclick="heartRain()">arokia.lijas</div>
   <div class="topbar-right">
     <span class="topbar-badge">June 5, 2026</span>
   </div>
@@ -783,7 +783,7 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
       </div>
 
       <!-- Netherlands classified photo -->
-      <div class="classified" onclick="this.classList.toggle('revealed')">
+      <div class="classified" onclick="revealClassified(this)">
         <img src="netherlands.jpg" alt="Netherlands" loading="lazy"/>
         <div class="classified-overlay">
           <div class="classified-tape">⚠️ CLASSIFIED</div>
@@ -821,7 +821,7 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
     <div class="finale-rule" id="f-rule"></div>
     <p class="finale-msg" id="f-msg">It's been an honor and a privilege. Mostly a privilege.</p>
     <button id="farewell-btn" onclick="grandFinale()">Farewell ✌️</button>
-    <div class="finale-sig" id="f-sig">— Arokia Lijas</div>
+    <div class="finale-sig" id="f-sig" onclick="heartRain()">— Arokia Lijas</div>
   </div>
 </section>
 
@@ -1062,6 +1062,24 @@ document.addEventListener('keydown',e=>{
     }
   }else ki=0;
 });
+
+/* ═════ CLASSIFIED AUTO-HIDE ═════ */
+function revealClassified(el){
+  el.classList.add('revealed');
+  setTimeout(()=>el.classList.remove('revealed'),2000);
+}
+
+/* ═════ HEART RAIN ═════ */
+function heartRain(){
+  const hearts=['💜','💙','💗','🤍','✨'];
+  for(let i=0;i<30;i++){
+    const h=document.createElement('div');
+    h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.cssText=`position:fixed;top:-40px;left:${Math.random()*100}vw;font-size:${18+Math.random()*20}px;pointer-events:none;z-index:9999;`;
+    document.body.appendChild(h);
+    gsap.to(h,{y:window.innerHeight+60,x:`+=${(Math.random()-0.5)*200}`,rotation:Math.random()*360,duration:2+Math.random()*2,delay:Math.random()*0.8,ease:'power1.in',onComplete:()=>h.remove()});
+  }
+}
 </script>
 </body>
 </html>
