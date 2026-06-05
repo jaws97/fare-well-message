@@ -311,7 +311,7 @@ body{
 .tl-line{position:absolute;left:8px;top:0;width:2px;height:100%;background:var(--glass-border);border-radius:2px}
 .tl-fill{position:absolute;left:8px;top:0;width:2px;height:0;background:var(--grad1);border-radius:2px}
 .tl-item{
-  position:relative;margin-bottom:14px;padding:12px 16px;
+  position:relative;margin-bottom:14px;padding:0px 16px;
   background:var(--glass);border:1px solid var(--glass-border);
   border-radius:12px;opacity:0;transform:translateX(-16px);
 }
@@ -405,7 +405,7 @@ body{
   margin-bottom:32px;opacity:0;text-align:center;transform:scale(1.05);
 }
 .finale-qt img{
-  max-width:clamp(280px,45vw,440px);border-radius:18px;
+  max-width:clamp(280px,45vw,550px);border-radius:18px;
   border:2px solid rgba(255,255,255,0.06);
   box-shadow:0 12px 60px rgba(168,85,247,0.2),0 4px 20px rgba(0,0,0,0.4);
   margin-bottom:20px;filter:blur(0px);transition:filter 0.5s;
@@ -440,6 +440,21 @@ body{
 /* ── FOOTER ── */
 footer{text-align:center;padding:36px 20px;border-top:1px solid var(--glass-border);position:relative;z-index:2}
 footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
+
+/* ── LOVE OVERLAY ── */
+.love-overlay{
+  position:fixed;inset:0;z-index:99995;
+  background:rgba(0,0,0,0.88);backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;opacity:0;pointer-events:none;
+  transition:opacity 0.5s;
+}
+.love-overlay.active{opacity:1;pointer-events:auto}
+.love-overlay img{
+  max-width:min(500px,85vw);max-height:75vh;border-radius:18px;
+  box-shadow:0 20px 80px rgba(236,72,153,0.4),0 0 60px rgba(236,72,153,0.2);
+  border:3px solid rgba(236,72,153,0.3);
+}
 
 /* ── TOAST ── */
 .toast{
@@ -515,6 +530,11 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
   <div id="lightbox-content"></div>
 </div>
 
+<!-- LOVE OVERLAY -->
+<div class="love-overlay" id="love-overlay" onclick="hideLove()">
+  <img src="My_LOve.jpg" alt="My Love"/>
+</div>
+
 <!-- PRELOADER -->
 <div id="preloader">
   <div class="pre-text" onclick="playTyping(event)">Jaws.</div>
@@ -535,7 +555,7 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
 <section class="hero" id="hero">
   <div class="hero-bg"></div>
   <div class="hero-inner">
-    <div class="hero-badge"><span class="dot"></span> CURRENTLY: EMOTIONALLY UNAVAILABLE</div>
+    <div class="hero-badge"><span class="dot"></span> STATUS: OUT OF OFFICE — PERMANENTLY</div>
     <h1>I'm <span class="grad">leaving.</span><br/>Try not to cry.</h1>
     <p class="hero-desc">It is with a <strong style="color:var(--accent1)">heavy heart</strong> and a light stomach that I announce my <strong style="color:var(--accent3)">vanishing act</strong> from the organization. To whom it may concern — and to those it does not concern, <em>irregardless</em>.</p>
   </div>
@@ -551,7 +571,9 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
         <div class="split-text">
           <h2>The <span class="grad">Michael Jordan</span> of Algorithms</h2>
           <p>Some people say I'm the <span class="hl">GOAT</span> of fullstack development. Others say <em>"Please stop talking and just review my pull request."</em></p>
-          <p>When I first arrived, I was just a young <span class="hl2">prodigal son</span>, writing code and taking names. Together, we survived trials and tribulations that would make lesser developers <span class="hl3">rage quit</span>.</p>
+          <p>When I first arrived, I was just a young <span class="hl2">prodigal son</span>, writing code and taking names. Four years later, I've mass produced more bugs than features — and somehow still got promoted. <span class="hl3">The system is broken</span>.</p>
+          <p>But honestly? I <span class="hl3" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px" onclick="showLove()">loved</span> every second of it.</p>
+
           <div style="margin-top:12px">
             <span class="sticker purple">Angular</span>
             <span class="sticker purple">Python</span>
@@ -611,6 +633,12 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
         <div class="tl-item"><h4>01:45</h4><p>"Fixed! ...wait, now staging is down."</p></div>
         <div class="tl-item"><h4>02:00</h4><p>"All good. Let's never speak of this again."</p></div>
       </div>
+
+      <div class="filmstrip" style="margin-top:24px" onclick="openLBfromImg(this)">
+        <img src="late_evening.jpg" alt="Late evening" loading="lazy" style="max-height:360px;width:100%;object-fit:cover"/>
+        <span class="filmstrip-tag">Evidence of dedication</span>
+        <span class="filmstrip-note">Proof we were here 🌙</span>
+      </div>
     </div>
   </div>
 </section>
@@ -623,23 +651,38 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
       <div class="sec-label"><span class="num">03</span><span class="txt">PARTY PLANNING COMMITTEE</span></div>
       <h2>Every guideline <span class="grad">violated</span>, every party <span class="grad4">legendary</span></h2>
       <p>I'll miss our <span class="hl">Parties</span>, the violated guidelines, <span class="hl3">Dumb Charades</span>, Dances, <span class="hl2">Late Night Banters</span> and all the chaos in between. Every team outing was basically a <span class="hl4">Gossip Session</span> — but with more food and slightly less inappropriate dancing.</p>
-      <p>If HR is reading this — <span class="hl2">everything was pre-approved</span>. Probably.</p>
+      <p>If HR is reading this — <span class="hl2">everything was pre-approved</span>. Probably. We were the <span class="hl3" style="cursor:pointer" onclick="showSuspects()">usual suspects</span>.</p>
 
-      <div class="collage collage-3" style="margin-top:24px">
+      <!-- Usual Suspects reveal -->
+      <div id="suspects-reveal" style="display:none;margin-top:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="filmstrip" onclick="openLBfromImg(this)">
+            <img src="usual_suspects.jpg" alt="The Usual Suspects" loading="lazy" style="max-height:360px;width:100%;object-fit:cover"/>
+            <span class="filmstrip-note">The usual suspects 🕵️</span>
+          </div>
+          <div class="filmstrip" onclick="openLBfromImg(this)">
+            <img src="ususal_suspects2.JPG" alt="The Usual Suspects 2" loading="lazy" style="max-height:360px;width:100%;object-fit:cover"/>
+            <span class="filmstrip-note">Caught again 🕵️</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="collage" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px">
         <div class="collage-item" onclick="openLBfromImg(this)">
           <img src="IMG-20220729-WA0003.jpg" alt="Day one" loading="lazy"/>
           <span class="tag">Day 1 energy ⚡</span>
-          <span class="year-badge">Jul 2022</span>
         </div>
         <div class="collage-item" onclick="openLBfromImg(this)">
           <img src="IMG-20220902-WA0027.jpg" alt="Team moment" loading="lazy"/>
           <span class="tag">Good times 🎉</span>
-          <span class="year-badge">Sep 2022</span>
         </div>
         <div class="collage-item" onclick="openLBfromImg(this)">
           <img src="IMG-20220824-WA0029.jpg" alt="Team outing" loading="lazy"/>
           <span class="tag">Squad goals</span>
-          <span class="year-badge">Aug 2022</span>
+        </div>
+        <div class="collage-item" onclick="openLBfromImg(this)">
+          <img src="B5C2DF19-EB42-4C58-B5B5-E96ACCE11FDF.JPG" alt="Party moments" loading="lazy"/>
+          <span class="tag">Party mode 🎊</span>
         </div>
       </div>
 
@@ -731,10 +774,17 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
         </div>
       </div>
 
-      <div class="vid-wrap" style="margin-top:24px" onclick="openLBVid(this)">
-        <video src="FAF45ADA-1FA2-41A0-8284-611F3B24045B.MP4" muted playsinline preload="metadata"></video>
-        <div class="vid-tag">▶ 2025</div>
-        <div class="vid-note">The final chapter 🎬</div>
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:24px;align-items:start">
+        <div class="vid-wrap" onclick="openLBVid(this)">
+          <video src="FAF45ADA-1FA2-41A0-8284-611F3B24045B.MP4" muted playsinline preload="metadata"></video>
+          <div class="vid-tag">▶ 2025</div>
+          <div class="vid-note">The final chapter 🎬</div>
+        </div>
+        <div class="vid-wrap" onclick="openLBVid(this)">
+          <video src="26D6E748-53C0-4B99-ABD1-BA9668919761.MP4#t=1" muted playsinline preload="metadata" style="max-height:400px;object-fit:cover"></video>
+          <div class="vid-tag">▶ Haldi</div>
+          <div class="vid-note">Yellove 💛</div>
+        </div>
       </div>
 
     </div>
@@ -770,9 +820,9 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
       <div class="sec-label"><span class="num">08</span><span class="txt">THE "WORK"SHOP</span></div>
       <div class="split">
         <div class="split-text">
-          <h2>The Amsterdam <span class="grad3">"Work"shop</span></h2>
-          <p>They called it a <span class="hl2">workshop</span>. The air quotes around <span class="hl3">"work"</span> were implied. Sent to Amsterdam for totally legitimate business reasons.</p>
-          <p>One of the best trips of my life. What happened there <span class="hl">stays there</span>. I am legally, ethically, and emotionally unable to elaborate further. 🤐</p>
+          <h2>The E-Mobility <span class="grad3">"Work"shop</span></h2>
+          <p>They called it a <span class="hl2">workshop</span>. The air quotes around <span class="hl3">"work"</span> were implied. Sent to Netherlands for totally legitimate business reasons.</p>
+          <p>One of the best trips of my life. What happened there <span class="hl" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px" onclick="showClassified()">stays there</span>. I am legally, ethically, and emotionally unable to elaborate further. 🤐</p>
         </div>
         <div class="split-media">
           <div class="polaroid tilt-more" onclick="openLB(this)">
@@ -783,10 +833,29 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
       </div>
 
       <!-- Netherlands classified photo -->
-      <div class="classified" onclick="revealClassified(this)">
+      <div class="classified" id="classified-nl" onclick="revealClassified(this)" style="display:none">
         <img src="netherlands.jpg" alt="Netherlands" loading="lazy"/>
         <div class="classified-overlay">
           <div class="classified-tape">⚠️ CLASSIFIED</div>
+        </div>
+      </div>
+
+      <div class="collage" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px">
+        <div class="collage-item" onclick="openLBfromImg(this)">
+          <img src="netherlands1.JPG" alt="Netherlands trip" loading="lazy"/>
+          <span class="tag">Amsterdam vibes 🇳🇱</span>
+        </div>
+        <div class="collage-item" onclick="openLBfromImg(this)">
+          <img src="netherlands2.JPG" alt="Netherlands trip" loading="lazy"/>
+          <span class="tag">Collaboration </span>
+        </div>
+        <div class="collage-item" onclick="openLBfromImg(this)">
+          <img src="netherlands4.JPG" alt="Netherlands trip" loading="lazy"/>
+          <span class="tag">"Workshop" evidence </span>
+        </div>
+        <div class="collage-item" onclick="openLBfromImg(this)">
+          <img src="netherlands3.JPG" alt="Netherlands trip" loading="lazy"/>
+          <span class="tag">Totally working </span>
         </div>
       </div>
     </div>
@@ -1068,6 +1137,26 @@ function revealClassified(el){
   el.classList.add('revealed');
   setTimeout(()=>el.classList.remove('revealed'),2000);
 }
+function showClassified(){
+  const el=document.getElementById('classified-nl');
+  if(el.style.display==='none'){
+    el.style.display='';
+    gsap.from(el,{opacity:0,y:20,duration:0.6,ease:'power3.out'});
+  } else {
+    gsap.to(el,{opacity:0,y:20,duration:0.4,ease:'power2.in',onComplete:()=>{el.style.display='none';gsap.set(el,{opacity:1,y:0})}});
+  }
+}
+
+/* ═════ USUAL SUSPECTS ═════ */
+function showSuspects(){
+  const el=document.getElementById('suspects-reveal');
+  if(el.style.display==='none'){
+    el.style.display='';
+    gsap.from(el,{opacity:0,y:20,duration:0.6,ease:'power3.out'});
+  } else {
+    gsap.to(el,{opacity:0,y:20,duration:0.4,ease:'power2.in',onComplete:()=>{el.style.display='none';gsap.set(el,{opacity:1,y:0})}});
+  }
+}
 
 /* ═════ HEART RAIN ═════ */
 function heartRain(){
@@ -1079,6 +1168,52 @@ function heartRain(){
     document.body.appendChild(h);
     gsap.to(h,{y:window.innerHeight+60,x:`+=${(Math.random()-0.5)*200}`,rotation:Math.random()*360,duration:2+Math.random()*2,delay:Math.random()*0.8,ease:'power1.in',onComplete:()=>h.remove()});
   }
+}
+
+/* ═════ LOVE OVERLAY ═════ */
+let loveActive=false;
+function showLove(){
+  if(loveActive) return;
+  loveActive=true;
+  const goatImg=document.querySelector('#sec-legacy .polaroid img');
+  const goatCaption=document.querySelector('#sec-legacy .polaroid-caption');
+  const splitText=document.querySelector('#sec-legacy .split-text');
+  const origSrc=goatImg.src;
+  const origCaption=goatCaption.textContent;
+  /* phase 1: show love pic in polaroid */
+  goatImg.src='My_LOve.jpg';
+  goatCaption.textContent='My actual GOAT ❤️';
+  gsap.fromTo(goatImg,{scale:1.1,opacity:0.5},{scale:1,opacity:1,duration:0.5,ease:'back.out(1.4)'});
+  /* red hearts rain */
+  const hearts=['❤️','💖','💗','💓','🩷','💞'];
+  for(let i=0;i<40;i++){
+    const h=document.createElement('div');
+    h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.cssText=`position:fixed;top:-40px;left:${Math.random()*100}vw;font-size:${20+Math.random()*24}px;pointer-events:none;z-index:99996;`;
+    document.body.appendChild(h);
+    gsap.to(h,{y:window.innerHeight+60,x:`+=${(Math.random()-0.5)*200}`,rotation:Math.random()*360,duration:2.5+Math.random()*2,delay:Math.random()*1.2,ease:'power1.in',onComplete:()=>h.remove()});
+  }
+  /* phase 2: show Walter White card in the text side after 1.5s */
+  const wb=document.createElement('div');
+  wb.style.cssText='display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;opacity:0;transform:translateY(12px);';
+  wb.innerHTML=`<img src="walter_white.webp" style="width:320px;border-radius:14px;object-fit:contain"/><p style="font-family:var(--hand);font-size:1.1rem;color:var(--text-dim);margin:6px 0 0;text-align:center">I was told to include this. I was also told to look happy about it. 😐</p>`;
+  setTimeout(()=>{
+    splitText.appendChild(wb);
+    gsap.to(wb,{opacity:1,y:0,duration:0.6,ease:'back.out(1.4)'});
+  },1500);
+  /* phase 3: revert everything after 6s */
+  setTimeout(()=>{
+    gsap.to(wb,{opacity:0,y:12,duration:0.3,onComplete:()=>wb.remove()});
+    gsap.to(goatImg,{opacity:0,duration:0.3,onComplete:()=>{
+      goatImg.src=origSrc;
+      goatCaption.textContent=origCaption;
+      gsap.to(goatImg,{opacity:1,duration:0.4});
+      loveActive=false;
+    }});
+  },6000);
+}
+function hideLove(){
+  document.getElementById('love-overlay').classList.remove('active');
 }
 
 /* ═════ JAWS THEME ON AL. ═════ */
