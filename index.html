@@ -800,7 +800,7 @@ footer p{font-size:0.85rem;letter-spacing:1px;opacity:0.7}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center">
         <div>
           <h2>When your colleagues become <span class="grad4">detectives</span></h2>
-          <p>Some people use their break time for coffee. These two used it to <span class="hl3">investigate the PO's personal life</span>. No NDA can protect you from curious colleagues with a phone. 🕵️‍♀️</p>
+          <p>Some people use their break time for coffee. These two used it to <span class="hl3">investigate the <span class="easter-trigger" onclick="openLBVidSrc('PO.MP4')" style="cursor:pointer;border-bottom:2px dotted var(--accent3)">PO</span>'s personal life</span>. No NDA can protect you from curious colleagues with a phone. 🕵️‍♀️</p>
         </div>
         <div class="vid-wrap" onclick="openLBVid(this)">
           <video src="B2AE5DA2-DBB3-43F6-9958-57F09796804C.mp4" muted playsinline preload="metadata" style="width:100%;border-radius:14px"></video>
@@ -1054,6 +1054,11 @@ function openLBVid(el){
   if(!vid)return;
   const lb=document.getElementById('lightbox');
   document.getElementById('lightbox-content').innerHTML=`<video src="${encodeURI(vid.src)}" controls autoplay style="max-width:90vw;max-height:85vh;border-radius:12px;box-shadow:0 20px 80px rgba(0,0,0,0.6)"></video>`;
+  lb.classList.add('active');
+}
+function openLBVidSrc(src){
+  const lb=document.getElementById('lightbox');
+  document.getElementById('lightbox-content').innerHTML=`<video src="${encodeURI(src)}" controls autoplay style="max-width:90vw;max-height:85vh;border-radius:12px;box-shadow:0 20px 80px rgba(0,0,0,0.6)"></video>`;
   lb.classList.add('active');
 }
 function closeLightbox(){
